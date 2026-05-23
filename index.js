@@ -14,7 +14,7 @@ app.listen(PORT, '0.0.0.0', () => {
 
 // ─── ANTI-CRASH ─────────────────────────────────────────────────────────
 process.on('uncaughtException', (err) => {
-  console.error('[UNCAUGHT EXCEPTION]', err.message);
+  console.error('[UNCAUGHT EXCEPTION]', err
 });
 process.on('unhandledRejection', (reason) => {
   console.error('[UNHANDLED REJECTION]', reason?.message || reason);
