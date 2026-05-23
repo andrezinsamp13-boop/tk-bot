@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tk-bot
+    runtime: node
+    rootDir: bot
+    buildCommand: npm install --production
+    startCommand: node index.js
+    healthCheckPath: /health
+    envVars:
+      - key: TOKEN
+        sync: false
+      - key: OWNER_ID
+        sync: false
+      - key: NODE_ENV
+        value: production
