@@ -23,6 +23,7 @@ function backButton(section) {
 // ─── MAIN MENU ────────────────────────────────────────────────────────────
 async function showMainMenu(interaction, useUpdate = true) {
   const config = db.getConfig();
+
   const embed = new EmbedBuilder()
     .setColor(0xE74C3C)
     .setTitle('⚙️ TK BOT — Painel de Configuração')
@@ -53,6 +54,7 @@ async function showMainMenu(interaction, useUpdate = true) {
 // ─── APARÊNCIA ────────────────────────────────────────────────────────────
 async function showAparencia(interaction) {
   const config = db.getConfig();
+
   const embed = new EmbedBuilder()
     .setColor(0xE74C3C)
     .setTitle('🎨 Aparência do Painel')
@@ -75,6 +77,7 @@ async function showAparencia(interaction) {
 // ─── TICKETS ──────────────────────────────────────────────────────────────
 async function showTickets(interaction) {
   const config = db.getConfig();
+
   const embed = new EmbedBuilder()
     .setColor(0xE74C3C)
     .setTitle('📁 Configurações de Tickets')
@@ -90,6 +93,7 @@ async function showTickets(interaction) {
       .setPlaceholder('📁 Selecionar Categoria de Tickets')
       .addChannelTypes(ChannelType.GuildCategory),
   );
+
   const btnRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder().setCustomId('tk_config_tk_mensagem').setLabel('💬 Mensagem Auto').setStyle(ButtonStyle.Primary),
     new ButtonBuilder().setCustomId('tk_config_tk_cooldown').setLabel('⏱️ Cooldown').setStyle(ButtonStyle.Primary),
@@ -102,4 +106,33 @@ async function showTickets(interaction) {
 // ─── EQUIPE ───────────────────────────────────────────────────────────────
 async function showEquipe(interaction) {
   const config = db.getConfig();
+
   const cargosList = config.staffRoleIds.length > 0
+    ? config.staffRoleIds.map(r => `<@&${r}>`).join(', ')
+    : '`Nenhum cargo definido`';
+
+  const embed = new EmbedBuilder()
+    .setColor(0xE74C3C)
+    .setTitle('👥 Configurações da Equipe')
+    .addFields(
+      { name: '🛡️ Cargos Staff', value: cargosList, inline: false },
+      { name: '📋 Logs', value: config.logChannelId ? `<#${config.logChannelId}>` : '`Não configurado`', inline: true },
+    );
+
+  const row = new ActionRowBuilder().addComponents(
+    new RoleSelectMenuBuilder()
+      .setCustomId('tk_sel_config_staff_roles')
+      .setPlaceholder('👥 Selecionar cargos staff'),
+    backButton(),
+  );
+
+  return interaction.update({ embeds: [embed], components: [row] });
+}
+
+// ─── EXPORTS ──────────────────────────────────────────────────────────────
+module.exports = {
+  showMainMenu,
+  showAparencia,
+  showTickets,
+  showEquipe,
+};
